@@ -1,0 +1,19 @@
+{
+  "contracts": {},
+  "solidityLibs": {},
+  "proxies": {
+    "dexkitcontracts/DexKit": [
+      {
+        "address": "0x10cd6DbeCdeB776fc4CCE3656A92dC8741502F98",
+        "kind": "NonProxy",
+        "bytecodeHash": "569b0e2b7d1c2da246e63bba461911262d90a8d7241abf195a46851f68feba9d"
+      },
+      {
+        "address": "0x78Aa63c7DD2758de2634700e3674066F4EFBA221",
+        "kind": "NonProxy",
+        "bytecodeHash": "f5ba976abbcaaa87bb813bc171fd140c9b0e7a771c83edf003ebe85563e99203"
+      }
+    ]
+  },
+  "manifestVersion": "2.2"
+}
