@@ -151,7 +151,6 @@ describe('DexKitSale', function () {
 
   });
 
-  // Test case
   it('Users buy DexKit OTC sale 1 with ETH and withdraw after sale end', async function () {
 
     await time.increase(time.duration.seconds(20));
@@ -170,6 +169,58 @@ describe('DexKitSale', function () {
     expect(Number(balanceKit2.toString())).to.be.eq(Number(ether('25') * 750));
 
   });
+
+
+  // Test case
+  it('User buy DexKit OTC sale 1 with ETH and can not withdraw two times', async function () {
+
+    await time.increase(time.duration.seconds(20));
+    await send.ether(user1, this.saleContract.address, ether('1'))
+   
+    await time.increase(saleDuration);
+    // when user calls function
+    await this.saleContract.withdrawTokens({ from: user1 });
+   
+    await expectRevert(this.saleContract.withdrawTokens({ from: user1 }), "DexKitSale: Amount needs to be bigger than zero");
+  
+  });
+  it('User buy DexKit OTC sale 1 with ETH and can not withdraw two times', async function () {
+
+    await time.increase(time.duration.seconds(20));
+  
+    await send.ether(user3, this.saleContract.address, ether('25'))
+    await time.increase(saleDuration);
+    
+    // when it is called by someonte else
+    await this.saleContract.withdrawByTokens(user3, { from: owner });
+
+    await expectRevert(this.saleContract.withdrawByTokens(user3, { from: owner }), "DexKitSale: Amount needs to be bigger than zero");
+    
+  });
+   // Test case
+   it('Users try to withdraw using 0x address', async function () {
+
+    await time.increase(time.duration.seconds(20));
+    await send.ether(user1, this.saleContract.address, ether('1'))
+    await send.ether(user2, this.saleContract.address, ether('25'))
+    await time.increase(saleDuration);
+  
+    await expectRevert(this.saleContract.withdrawByTokens('0x', { from: owner }), 'invalid address (arg="user", coderType="address", value="0x")');
+  
+  });
+
+   // Test case
+   it('Users try to withdraw using 0x000000000000000000000000000000000000dEaD address', async function () {
+
+    await time.increase(time.duration.seconds(20));
+    await send.ether(user1, this.saleContract.address, ether('1'))
+    await send.ether(user2, this.saleContract.address, ether('25'))
+    await time.increase(saleDuration);
+  
+    await expectRevert(this.saleContract.withdrawByTokens('0x000000000000000000000000000000000000dEaD', { from: owner }), 'DexKitSale: Amount needs to be bigger than zero');
+  
+  });
+
   // Test case
   it('Users buy DexKit OTC sale 1 with ETH and withdraw after withdraw allowed', async function () {
 
@@ -188,6 +239,7 @@ describe('DexKitSale', function () {
     expect(Number(balanceKit.toString())).to.be.eq(Number(ether('1') * 750));
     expect(Number(balanceKit2.toString())).to.be.eq(Number(ether('25') * 750));
   });
+ 
   // We are not able to test 106 users  
   it('Not able to sell above max cap', async function () {
 

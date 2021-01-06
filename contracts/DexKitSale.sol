@@ -201,7 +201,7 @@ contract DexKitSale is  ReentrancyGuard, Ownable {
      */
     function withdrawETH() public {
       uint256 amount = address(this).balance;
-      require(amount > 0, "No ETH to Withraw");
+      require(amount > 0, "No ETH to Withdraw");
       _wallet.transfer(amount);
     }
       /**
